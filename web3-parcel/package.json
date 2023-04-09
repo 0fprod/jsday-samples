@@ -1,0 +1,25 @@
+{
+  "name": "web3-parcel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gen-ethers-types": "typechain --target=ethers-v5 './simpleStorage.json'",
+    "gen-web3-types": "typechain --target=web3-v1 './simpleStorage.json'",
+    "dev": "parcel index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@typechain/ethers-v5": "^10.2.0",
+    "@typechain/web3-v1": "^6.0.2",
+    "parcel": "^2.8.3",
+    "punycode": "^1.4.1",
+    "typechain": "^8.1.1"
+  },
+  "dependencies": {
+    "ethers": "5.7.0",
+    "web3": "^1.9.0"
+  }
+}
