@@ -5,7 +5,7 @@ import Web3 from 'web3';
 import { simpleStorageContractAddress } from '../../constants';
 import { AbiItem } from 'web3-utils';
 import { SimpleStorage } from '../types/web3-v1-contracts/SimpleStorage';
-import simpleStorageAbi from '../abi/SimpleStorage.json';
+import simpleStorageAbi from '../../abi/SimpleStorage.json';
 
 // const web3 = new Web3(Web3.givenProvider);
 const web3 = new Web3(window.ethereum);
