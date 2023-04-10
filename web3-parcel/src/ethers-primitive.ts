@@ -2,7 +2,7 @@ console.log('####################');
 console.log('ethers-primitive.ts');
 console.log('####################');
 import { ethers } from 'ethers';
-import { randomGoerliWallet, goerliId } from './constants';
+import { randomGoerliWallet, goerliId } from '../../constants';
 
 const provider = new ethers.providers.InfuraProvider(goerliId);
 

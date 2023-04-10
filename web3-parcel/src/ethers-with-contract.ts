@@ -2,7 +2,7 @@ console.log('####################');
 console.log('ethers-with-contract.ts');
 console.log('####################');
 import { ethers } from 'ethers';
-import { goerliId, simpleStorageContractAddress } from './constants';
+import { goerliId, simpleStorageContractAddress } from '../../constants';
 import simpleStorageAbi from '../abi/SimpleStorage.json';
 import { SimpleStorage } from '../types/ethers-contracts';
 

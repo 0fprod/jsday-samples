@@ -2,7 +2,7 @@ console.log('####################');
 console.log('web3-with-contract.ts');
 console.log('####################');
 import Web3 from 'web3';
-import { simpleStorageContractAddress } from './constants';
+import { simpleStorageContractAddress } from '../../constants';
 import { AbiItem } from 'web3-utils';
 import { SimpleStorage } from '../types/web3-v1-contracts/SimpleStorage';
 import simpleStorageAbi from '../abi/SimpleStorage.json';
