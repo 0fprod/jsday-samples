@@ -1,42 +1,50 @@
-import { useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { InjectedConnector } from '@web3-react/injected-connector';
-import { simpleStorageContractAddress } from '../../../constants';
 import { SimpleStorage } from '../../../web3-parcel/types/web3-v1-contracts/SimpleStorage';
+import { simpleStorageContractAddress } from '../../../constants';
 import abi from '../../../abi/simpleStorage.json';
-import Web3 from 'web3';
+import { useWeb3React } from '@web3-react/core';
+import { TransactionReceipt } from 'web3-core';
+import { useEffect, useState } from 'react';
+import { connector } from './web3.config';
 import { AbiItem } from 'web3-utils';
-const connector = new InjectedConnector({ supportedChainIds: [5] });
+import Web3 from 'web3';
 
 function Web3ReactApp() {
-  const { active, activate, chainId, account, library } = useWeb3React<Web3>();
+  const { active, activate, chainId, account, library: provider, deactivate } = useWeb3React<Web3>();
   const [contract, setContract] = useState<SimpleStorage>();
   const [storedNumber, setStoredNumber] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [txHash, setTxHash] = useState<string>('');
 
   useEffect(() => {
-    activate(connector);
-  }, [activate]);
-
-  useEffect(() => {
-    if (active && library) {
-      insantiateContract(library);
+    if (active && provider && !contract) {
+      insantiateContract(provider);
     }
-  }, [active, library]);
+  }, [active, provider, contract]);
 
-  async function insantiateContract(library: Web3) {
-    const signer = await library.eth.getAccounts();
-    const contract = new library.eth.Contract(abi as AbiItem[], simpleStorageContractAddress, {
+  async function insantiateContract(provider: Web3) {
+    const signer = await provider.eth.getAccounts();
+    const contract = new provider.eth.Contract(abi as AbiItem[], simpleStorageContractAddress, {
       from: signer[0],
     }) as unknown as SimpleStorage;
     setContract(contract);
   }
 
+  function connect() {
+    activate(connector);
+  }
+
+  function disconnect() {
+    deactivate();
+  }
+
   function storeNumber() {
+    setLoading(true);
     contract?.methods
       .store(32)
       .send()
-      .on('receipt', (receipt: any) => {
-        console.log(receipt);
+      .on('receipt', (receipt: TransactionReceipt) => {
+        setLoading(false);
+        setTxHash(receipt.transactionHash);
         getStoredNumber();
       });
   }
@@ -52,12 +60,24 @@ function Web3ReactApp() {
 
   return (
     <>
-      {active && <p>Active: {active ? 'true' : 'false'}</p>}
-      {chainId && <p>Chain ID: {chainId}</p>}
-      {account && <p>Account: {account}</p>}
-      <button onClick={storeNumber}> Save number 42 </button>
-      <button onClick={getStoredNumber}> Retrieve number! </button>
+      <p>{active ? <button onClick={disconnect}> Disconnect</button> : <button onClick={connect}> Connect</button>}</p>
+      <p>Chain ID: {chainId}</p>
+      <p>Account: {account}</p>
+      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+        <button onClick={storeNumber}> Save number 42 </button>
+        <button onClick={getStoredNumber}> Retrieve number! </button>
+      </div>
       <p>Stored Number: {storedNumber}</p>
+      <p>{loading ? 'Loading..' : ''}</p>
+      <p>
+        {txHash ? (
+          <a href={`https://goerli.etherscan.io/tx/${txHash}`} target="_blank">
+            TxHash
+          </a>
+        ) : (
+          ''
+        )}
+      </p>
     </>
   );
 }

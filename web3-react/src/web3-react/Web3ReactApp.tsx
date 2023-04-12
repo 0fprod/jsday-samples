@@ -1,9 +1,6 @@
 import { Web3ReactProvider } from '@web3-react/core';
 import Children from './Children';
-import Web3 from 'web3';
-const getLibrary = () => {
-  return new Web3(window.ethereum);
-};
+import { getLibrary } from './web3.config';
 
 function Web3ReactApp() {
   return (
