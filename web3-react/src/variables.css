@@ -1,0 +1,17 @@
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-text: #242424;
+    --color-background: #ffffff;
+    --color-accent: #646cff;
+    --color-button-background: #f9f9f9;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #ffffff;
+    --color-background: #242424;
+    --color-accent: #646cff;
+    --color-button-background: #1a1a1a;
+  }
+}
