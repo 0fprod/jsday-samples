@@ -6,7 +6,9 @@ function Web3ReactApp() {
   return (
     <div className="App">
       <Web3ReactProvider getLibrary={getLibrary}>
-        <h1>Using @web3-react/core</h1>
+        <h1>
+          Using <code>@web3-react/core</code>
+        </h1>
         <Children />
       </Web3ReactProvider>
     </div>

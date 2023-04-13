@@ -68,7 +68,7 @@ function Web3ReactApp() {
         <button onClick={getStoredNumber}> Retrieve number! </button>
       </div>
       <p>Stored Number: {storedNumber}</p>
-      <p>{loading ? 'Loading..' : ''}</p>
+      <p>{loading ? 'Loading...' : ''}</p>
       <p>
         {txHash ? (
           <a href={`https://goerli.etherscan.io/tx/${txHash}`} target="_blank">
