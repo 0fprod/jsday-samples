@@ -14,17 +14,17 @@ function Web3ReactApp() {
   const [storedNumber, setStoredNumber] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [txHash, setTxHash] = useState<string>('');
+  const [randomNumber] = useState<number>(Math.floor(Math.random() * 100));
 
   useEffect(() => {
-    if (active && provider && !contract) {
-      insantiateContract(provider);
+    if (active && provider && account && !contract) {
+      insantiateContract(provider, account);
     }
-  }, [active, provider, contract]);
+  }, [active, provider, account, contract]);
 
-  async function insantiateContract(provider: Web3) {
-    const signer = await provider.eth.getAccounts();
+  async function insantiateContract(provider: Web3, signer: string) {
     const contract = new provider.eth.Contract(abi as AbiItem[], simpleStorageContractAddress, {
-      from: signer[0],
+      from: signer,
     }) as unknown as SimpleStorage;
     setContract(contract);
   }
@@ -40,22 +40,28 @@ function Web3ReactApp() {
   function storeNumber() {
     setLoading(true);
     contract?.methods
-      .store(32)
+      .store(randomNumber)
       .send()
       .on('receipt', (receipt: TransactionReceipt) => {
-        setLoading(false);
         setTxHash(receipt.transactionHash);
+      })
+      .finally(() => {
+        setLoading(false);
         getStoredNumber();
       });
   }
 
   function getStoredNumber() {
-    contract?.methods
-      .retrieve()
-      .call()
-      .then((res: any) => {
-        setStoredNumber(res);
-      });
+    if (contract) {
+      setLoading(true);
+      contract.methods
+        .retrieve()
+        .call()
+        .then((res: any) => {
+          setStoredNumber(res);
+          setLoading(false);
+        });
+    }
   }
 
   return (
@@ -64,20 +70,24 @@ function Web3ReactApp() {
       <p>Chain ID: {chainId}</p>
       <p>Account: {account}</p>
       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-        <button onClick={storeNumber}> Save number 42 </button>
-        <button onClick={getStoredNumber}> Retrieve number! </button>
+        <button onClick={storeNumber} disabled={!active}>
+          Save number {randomNumber}{' '}
+        </button>
+        <button onClick={getStoredNumber} disabled={!active}>
+          Retrieve number!{' '}
+        </button>
       </div>
-      <p>Stored Number: {storedNumber}</p>
-      <p>{loading ? 'Loading...' : ''}</p>
-      <p>
-        {txHash ? (
-          <a href={`https://goerli.etherscan.io/tx/${txHash}`} target="_blank">
-            TxHash
-          </a>
-        ) : (
-          ''
+      <div>
+        {loading ? 'Loading...' : <>{storedNumber && <p>Stored Number: {storedNumber}</p>}</>}
+        {txHash && (
+          <p>
+            TxHash:{' '}
+            <a href={`https://goerli.etherscan.io/tx/${txHash}`} target="_blank">
+              {txHash}
+            </a>
+          </p>
         )}
-      </p>
+      </div>
     </>
   );
 }

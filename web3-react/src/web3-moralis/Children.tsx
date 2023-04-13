@@ -8,6 +8,8 @@ function Web3ReactApp() {
   const { chainId, enableWeb3, isWeb3Enabled, account, deactivateWeb3 } = useMoralis();
   const [storedNumber, setStoredNumber] = useState<string>('');
   const [txHash, setTxHash] = useState<string>('');
+  const [randomNumber] = useState<number>(Math.floor(Math.random() * 100));
+
   const { runContractFunction: retrieve } = useWeb3Contract({
     abi,
     contractAddress: simpleStorageContractAddress,
@@ -17,7 +19,7 @@ function Web3ReactApp() {
     abi,
     contractAddress: simpleStorageContractAddress,
     functionName: 'store',
-    params: { _favouriteNumber: 50 },
+    params: { _favouriteNumber: randomNumber },
   });
 
   function connect() {
@@ -30,7 +32,7 @@ function Web3ReactApp() {
 
   function storeNumber() {
     store({
-      // params: { params: { _favouriteNumber: 42 } },
+      // params: { params: { _favouriteNumber: randomNumber } },
       onSuccess: (res: any) => {
         setTxHash((res as Transaction).hash ?? '');
       },
@@ -60,20 +62,26 @@ function Web3ReactApp() {
       <p>Chain ID: {chainId}</p>
       <p>Account: {account}</p>
       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-        <button onClick={storeNumber}> Save number 42 </button>
-        <button onClick={getStoredNumber}> Retrieve number! </button>
+        <button onClick={storeNumber} disabled={!isWeb3Enabled}>
+          {' '}
+          Save number {randomNumber}{' '}
+        </button>
+        <button onClick={getStoredNumber} disabled={!isWeb3Enabled}>
+          {' '}
+          Retrieve number!{' '}
+        </button>
       </div>
-      <p>Stored Number: {storedNumber}</p>
-      <p>{isLoading ? 'Loading...' : ''}</p>
-      <p>
-        {txHash ? (
-          <a href={`https://goerli.etherscan.io/tx/${txHash}`} target="_blank">
-            TxHash
-          </a>
-        ) : (
-          ''
+      <div>
+        {isLoading ? 'Loading...' : <>{storedNumber && <p>Stored Number: {storedNumber}</p>}</>}
+        {txHash && (
+          <p>
+            TxHash:{' '}
+            <a href={`https://goerli.etherscan.io/tx/${txHash}`} target="_blank">
+              {txHash}
+            </a>
+          </p>
         )}
-      </p>
+      </div>
     </>
   );
 }
