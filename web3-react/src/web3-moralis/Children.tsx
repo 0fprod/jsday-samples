@@ -42,7 +42,7 @@ function Web3ReactApp() {
     });
   }
 
-  function getStoredNumber() {
+  function retrieveNumber() {
     retrieve({
       onSuccess: (res: any) => {
         setStoredNumber((res as BigNumber).toString());
@@ -66,7 +66,7 @@ function Web3ReactApp() {
           {' '}
           Save number {randomNumber}{' '}
         </button>
-        <button onClick={getStoredNumber} disabled={!isWeb3Enabled}>
+        <button onClick={retrieveNumber} disabled={!isWeb3Enabled}>
           {' '}
           Retrieve number!{' '}
         </button>
