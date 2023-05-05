@@ -47,11 +47,11 @@ function Web3ReactApp() {
       })
       .finally(() => {
         setLoading(false);
-        getStoredNumber();
+        retrieveNumber();
       });
   }
 
-  function getStoredNumber() {
+  function retrieveNumber() {
     if (contract) {
       setLoading(true);
       contract.methods
@@ -73,7 +73,7 @@ function Web3ReactApp() {
         <button onClick={storeNumber} disabled={!active}>
           Save number {randomNumber}{' '}
         </button>
-        <button onClick={getStoredNumber} disabled={!active}>
+        <button onClick={retrieveNumber} disabled={!active}>
           Retrieve number!{' '}
         </button>
       </div>
