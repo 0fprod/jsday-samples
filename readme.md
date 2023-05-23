@@ -1,6 +1,6 @@
 # Bajando a tierra la web3
 
-## Enlaces:
+## Links:
 
 - [Rekt.news](https://rekt.news)
 - [DefiLlama](https://defillama.com/languages)
