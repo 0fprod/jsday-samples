@@ -12,7 +12,7 @@ const web3 = new Web3(window.ethereum);
 
 // storeNumber(55);
 // retrieveNumber();
-// connect();
+connect();
 
 async function storeNumber(number: number) {
   const contract = new web3.eth.Contract(simpleStorageAbi as AbiItem[], simpleStorageContractAddress);
