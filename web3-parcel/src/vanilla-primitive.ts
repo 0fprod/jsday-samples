@@ -1,3 +1,6 @@
+console.log('####################');
+console.log('vanilla-primitive.ts');
+console.log('####################');
 import { infuraGoerliUrl, randomGoerliWallet } from '../../constants';
 
 function requestBalanceFor(walletAddress: string) {

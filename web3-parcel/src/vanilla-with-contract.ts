@@ -1,3 +1,6 @@
+console.log('####################');
+console.log('vanilla-with-contract.ts');
+console.log('####################');
 import { infuraGoerliUrl, simpleStorageContractAddress } from '../../constants';
 
 function retrieveStoredNumber(transaction) {
@@ -17,6 +20,7 @@ function retrieveStoredNumber(transaction) {
     .then((data) => console.log(data));
 }
 
+// 🤔
 const tx = {
   to: simpleStorageContractAddress,
   data: '0x2e64cec1a5de1977f20d76662d93c30a14fb1bd1434893ae548f07fa344eee7d',

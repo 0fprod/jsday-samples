@@ -6,8 +6,8 @@ import { randomGoerliWallet, goerliId } from '../../constants';
 
 const provider = new ethers.providers.InfuraProvider(goerliId);
 
-provider.getBalance(randomGoerliWallet).then(handleBalance);
+provider.getBalance(randomGoerliWallet).then(getBalanceHandler);
 
-function handleBalance(balance: ethers.BigNumberish) {
+function getBalanceHandler(balance: ethers.BigNumberish) {
   console.log('Balance: ', ethers.utils.formatEther(balance));
 }
